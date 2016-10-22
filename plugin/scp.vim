@@ -5,30 +5,30 @@ command! ScpEnable  call scp#enable()
 command! ScpDisable call scp#disable()
 
 
-if get(g:scp_disable,'php',0)==0
-	autocmd FileType php call scp#setup_buffer({ 'route': 'scp#completor#php#rule' })
-endif
+func! s:on_filetype()
 
-if get(g:scp_disable,'markdown',0)==0
-	autocmd FileType markdown call scp#setup_buffer({ 'route': 'scp#completor#markdown#rule' })
-endif
+	let s:builtin = {
+				\ "php"            : { 'route' : 'scp#completor#php#rule' },
+				\ "markdown"       : { 'route' : 'scp#completor#markdown#rule' },
+				\ "javascript"     : { 'route' : 'scp#completor#javascript#rule' },
+				\ "javascript.jsx" : { 'route' : 'scp#completor#javascript#rule' },
+				\ "html"           : { 'route' : 'scp#completor#html#rule' },
+				\ "go"             : { 'route' : 'scp#completor#go#rule' },
+				\ "text"           : { 'route' : 'scp#completor#text#rule' },
+				\ }
 
-if get(g:scp_disable,'javascript',0)==0
-	autocmd FileType javascript.jsx,javascript call scp#setup_buffer({ 'route': 'scp#completor#javascript#rule' })
-endif
+	let l:ft = &ft
+	if empty(l:ft)
+		let l:ft = "*"
+	endif
 
-if get(g:scp_disable,'html',0)==0
-	autocmd FileType html call scp#setup_buffer({ 'route': 'scp#completor#html#rule' })
-endif
+	if get(g:scp_disable,l:ft,0)==0
+		call scp#setup_buffer(get(s:builtin,&ft,{ 'route': 'scp#completor#text#rule' }))
+	endif
 
-if get(g:scp_disable,'go',0)==0
-	autocmd FileType go call scp#setup_buffer({ 'route': 'scp#completor#go#rule' })
-endif
+endfunc
 
-if get(g:scp_disable,'text',0)==0
-	autocmd FileType text call scp#setup_buffer({ 'route': 'scp#completor#text#rule' })
-endif
-
+autocmd FileType * call <SID>on_filetype()
 
  
 " some enhancements
