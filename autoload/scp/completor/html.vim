@@ -1,9 +1,10 @@
 
 func! scp#completor#html#rule(...)
 	return {
+		\ "javaScript": 'scp#completor#javascript#rule',
 		\ "*" : [
 				\ { '=~': '\v\<\/{0,1}\k$'  , 'completefunc': "htmlcomplete#CompleteTags"},
-				\ { '=~': '\v\k{3}$'        , 'feedkeys': "\<C-x>\<C-N>"}
+				\ { '=~': '\v\k$'           , 'route': "scp#completor#text#rule"}
 		\ ]
 	\ }
 
