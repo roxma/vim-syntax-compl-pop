@@ -2,14 +2,14 @@
 func! scp#completor#php#rule(...)
 	return {
 		\ "phpRegion" : {
-			\ "phpComment" : "scp#completor#txt#rule",
+			\ "phpComment" : "scp#completor#text#rule",
 			\ "phpStringSingle" : [
 				\ { '=~': '\vrequire|include' , 'feedkeys': "\<C-x>\<C-N>"},
-				\ { '=~': ''                  , 'route': "scp#completor#txt#rule" },
+				\ { '=~': ''                  , 'route': "scp#completor#text#rule" },
 			\ ],
 			\ "phpStringDouble" : [
 				\ { '=~': '\vrequire|include' , 'feedkeys': "\<C-x>\<C-N>"},
-				\ { '=~': ''                  , 'route': "scp#completor#txt#rule" },
+				\ { '=~': ''                  , 'route': "scp#completor#text#rule" },
 			\ ],
 			\ "*" : [
 				\ { '=~': '\v\k{3}$'      , 'feedkeys': "\<C-x>\<C-N>"},
@@ -17,7 +17,7 @@ func! scp#completor#php#rule(...)
 				\ { '=~': '->$'           , 'completefunc': "phpcomplete#CompletePHP", "force": 1},
 			\ ]
 		\ },
-		\ "*" : "scp#completor#txt#rule"
+		\ "*" : "scp#completor#text#rule"
 	\ }
 
 	" TODO: route html complete
