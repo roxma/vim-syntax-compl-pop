@@ -58,9 +58,6 @@ func! scp#setup_buffer(options)
 	let b:scp_options['completeopt'] = get(b:scp_options,'completeopt','menu,menuone,noinsert,noselect')
 	silent! execute "setlocal shortmess" . get(b:scp_options,'shortmess',"+=c")
 
-	" TODO
-	let &l:completeopt = get(a:options,'completeopt','menu,menuone,noinsert,noselect')
-
 	" Supress the anoying messages like '-- Keyword completion (^N^P)' when
 	" press '<C-n>' key. This option is only supported after vim 7.4.314 
 	" https://groups.google.com/forum/#!topic/vim_dev/WeBBjkXE8H8
@@ -70,12 +67,6 @@ endfunction
 func! s:reset()
 	let b:scp_smart_done=1
 	let b:scp_done=1
-endfunc
-
-func! s:on_complete_done()
-	let b:scp_done=1
-	let b:scp_complete_done_text = s:current_text()
-	call scp#log('complete done')
 endfunc
 
 func! scp#log(line)
@@ -122,7 +113,7 @@ func! scp#feed_popup(char)
 	let b:scp_done = 0
 	let b:scp_smart_done = 0
 	if empty(get(l:match,'completefunc',{}))
-		call feedkeys(l:match['feedkeys'])
+		call s:feedkeys(l:match['feedkeys'])
 	else
 		call scp#completefunc({'completefunc': l:match['completefunc'], 'autorefresh': get(l:match,'autorefresh',0)})
 	endif
@@ -130,6 +121,33 @@ func! scp#feed_popup(char)
 	return ''
 
 endfunction
+
+func! s:on_complete_done()
+
+	call scp#log('on_complete_done')
+
+	let b:scp_done=1
+	let b:scp_complete_done_text = s:current_text()
+
+	call s:completefunc_done()
+
+	if get(b:,'scp_completefunc_cnt',0)==0
+		if exists('b:completeopt_backup')
+			let &l:completeopt = b:completeopt_backup 
+			unlet b:completeopt_backup
+		endif
+	endif
+
+endfunc
+
+
+func! s:feedkeys(keys,...)
+	if !exists('b:completeopt_backup')
+		let b:completeopt_backup = &l:completeopt
+	endif
+	let &l:completeopt = get(b:scp_options,'completeopt','menu,menuone,noinsert,noselect')
+	call feedkeys(a:keys)
+endfunc
 
 func! scp#set_complete_done()
 	let b:scp_done = 1
@@ -229,10 +247,6 @@ endfunction
 " }
 func! scp#completefunc(opt)
 
-	if !exists("b:scp_completefunc_cnt")
-		autocmd CompleteDone <buffer> call s:completefunc_done()
-	endif
-
 	if get(b:,"scp_completefunc_cnt",0)==0
 		let b:scp_completefunc = &l:completefunc
 	endif
@@ -247,7 +261,7 @@ func! scp#completefunc(opt)
 	let b:scp_completefunc_cnt = get(b:,"scp_completefunc_cnt",0)+1
 
 	let &l:completefunc = a:opt["completefunc"]
-	call feedkeys("\<C-X>\<C-U>",'t')
+	call s:feedkeys("\<C-X>\<C-U>",'t')
 
 endfunction
 
@@ -260,7 +274,7 @@ func! s:refresh()
 	endif
 	let b:scp_completefunc_cnt += 1
 
-	noautocmd call feedkeys("\<C-X>\<C-U>",'t')
+	noautocmd call s:feedkeys("\<C-X>\<C-U>",'t')
 endfunction
 
 func! s:completefunc_done()
