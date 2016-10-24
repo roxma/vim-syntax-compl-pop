@@ -147,7 +147,7 @@ endfunc
 func! s:feedkeys(keys,...)
 	if !exists('b:completeopt_backup')
 		let b:completeopt_backup = &l:completeopt
-		let b:ignorecase_backup = &l:completeopt
+		let b:ignorecase_backup = &l:ignorecase
 	endif
 	let &l:completeopt = b:scp_options['completeopt']
 	let &l:ignorecase = b:scp_options['ignorecase']
