@@ -56,6 +56,7 @@ func! scp#setup_buffer(options)
 
 	let b:scp_options                = copy(a:options)
 	let b:scp_options['completeopt'] = get(b:scp_options,'completeopt','menu,menuone,noinsert,noselect')
+	let b:scp_options['ignorecase']  = get(b:scp_options,'ignorecase','1')
 	silent! execute "setlocal shortmess" . get(b:scp_options,'shortmess',"+=c")
 
 	" Supress the anoying messages like '-- Keyword completion (^N^P)' when
@@ -134,7 +135,9 @@ func! s:on_complete_done()
 	if get(b:,'scp_completefunc_cnt',0)==0
 		if exists('b:completeopt_backup')
 			let &l:completeopt = b:completeopt_backup 
+			let &l:ignorecase = b:ignorecase_backup
 			unlet b:completeopt_backup
+			unlet b:ignorecase_backup
 		endif
 	endif
 
@@ -144,8 +147,10 @@ endfunc
 func! s:feedkeys(keys,...)
 	if !exists('b:completeopt_backup')
 		let b:completeopt_backup = &l:completeopt
+		let b:ignorecase_backup = &l:completeopt
 	endif
-	let &l:completeopt = get(b:scp_options,'completeopt','menu,menuone,noinsert,noselect')
+	let &l:completeopt = b:scp_options['completeopt']
+	let &l:ignorecase = b:scp_options['ignorecase']
 	call feedkeys(a:keys)
 endfunc
 

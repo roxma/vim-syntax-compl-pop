@@ -1,4 +1,6 @@
 
+" TODO ultisnips integration
+
 let g:scp_disable = get(g:,'scp_disable',{})
 
 command! ScpEnable  call scp#enable()
