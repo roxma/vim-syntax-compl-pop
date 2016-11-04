@@ -81,7 +81,7 @@ endfunction
 " set the parameter to v:char, otherwise set it to empty stirng
 func! scp#feed_popup(char)
 
-	if g:scp_enable == 0
+	if g:scp_enable == 0 || &paste == 1
 		return
 	endif
 
