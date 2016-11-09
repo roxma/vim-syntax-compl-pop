@@ -2,8 +2,8 @@
 
 ## What's vim-syntax-compl-pop?
 
-vim-syntax-compl-pop (SCP) is a lightweight experimental vim plugin
-implementing smart syntax aware auto-completion popup.
+vim-syntax-compl-pop is an experimental flexible vim plugin that implements
+syntax aware auto-completion popup.
 
 ## Why ?
 
