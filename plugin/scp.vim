@@ -11,6 +11,7 @@ func! s:on_filetype()
 
 	let s:builtin = {
 				\ "php"            : { 'route' : 'scp#completor#php#rule' },
+				\ "python"         : { 'route' : 'scp#completor#python#rule' },
 				\ "markdown"       : { 'route' : 'scp#completor#markdown#rule' },
 				\ "javascript"     : { 'route' : 'scp#completor#javascript#rule' },
 				\ "javascript.jsx" : { 'route' : 'scp#completor#javascript#rule' },
