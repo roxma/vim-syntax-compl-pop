@@ -14,6 +14,7 @@ func! scp#completor#python#rule(...)
 					\ { '=~': '\v\k{2}$' , 'feedkeys': "\<C-x>\<C-n>"} ,
 					\ { '=~': '\.$'      , 'completefunc': "jedi#completions", "force": 1} ,
 					\ { '=~': 'import $' , 'completefunc': "jedi#completions", "force": 1} ,
+					\ { '=~': 'from $' , 'completefunc': "jedi#completions", "force": 1} ,
 			\ ],
 		\ }
 	else
