@@ -15,6 +15,7 @@ func! scp#completor#python#rule(...)
 					\ { '=~': '\.$'      , 'completefunc': "jedi#completions", "force": 1} ,
 					\ { '=~': 'import $' , 'completefunc': "jedi#completions", "force": 1} ,
 					\ { '=~': 'from $' , 'completefunc': "jedi#completions", "force": 1} ,
+					\ { '=~': 'import.*, $' , 'completefunc': "jedi#completions", "force": 1} ,
 			\ ],
 		\ }
 	else
